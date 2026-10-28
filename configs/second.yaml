@@ -1,0 +1,40 @@
+format_version: 1
+num_classes: 7
+variant: full
+data:
+  root: data/SECOND
+  train_split: train_fit_seed42
+  test_split: test
+  val_split: val_seed42
+  augmentation_policy: bt_reference
+model:
+  profile: paper_graph_v3
+  checkpoint_blocks: true
+  encoder_channels: [64, 64, 128, 256, 512]
+  encoder_repeats: [3, 4, 6, 3]
+  encoder_expansions: [2, 2, 4, 4]
+  scan_dim: 128
+  scan_depth: 2
+  scan_heads: 4
+  scan_stripe: 4
+  mlp_ratio: 4.0
+  ssae_reduction: 16
+train:
+  epochs: 50
+  batch_size: 8
+  eval_batch_size: 8
+  lr: 0.07
+  momentum: 0.9
+  weight_decay: 0.0005
+  nesterov: true
+  poly_power: 1.5
+  poly_step_origin: 1
+  seed: 42
+  workers: 0
+  alpha: 1.0
+  amp: false
+  device: cuda
+  log_every: 10
+runtime:
+  output_root: runs
+  purpose: research
