@@ -3,9 +3,9 @@ num_classes: 7
 variant: full
 data:
   root: data/SECOND
-  train_split: train_fit_seed42
+  train_split: train
   test_split: test
-  val_split: val_seed42
+  val_split: null
   augmentation_policy: bt_reference
 model:
   profile: paper_graph_v3
@@ -38,3 +38,4 @@ train:
 runtime:
   output_root: runs
   purpose: research
+

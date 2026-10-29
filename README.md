@@ -9,13 +9,33 @@ Place SECOND at `data/SECOND` with `A`, `B`, `label1`, `label2`, and
 `list/train.txt`, `list/test.txt`. Paths may be overridden with `--datapath`.
 
 ```bash
-python prepare_validation_split.py --datapath data/SECOND
 python train_SCD.py --config configs/second.yaml --run-dir runs/full
-python test_SCD.py --checkpoint runs/full/best.pth --output-dir runs/full/test
+python test_SCD.py --checkpoint runs/full/last.pth --output-dir runs/full/test
 ```
 
-The configuration uses 1900 training, 475 validation and 593 test pairs.
-Train for 50 epochs and evaluate the checkpoint selected by validation SeK.
+The default SECOND protocol uses all **2375 training pairs** listed in
+`list/train.txt` and **593 independent test pairs** listed in `list/test.txt`,
+matching the train/test split stated in the manuscript. No validation subset
+is held out from the training pairs (`val_split: null`). The dataset loader
+checks that the training and test lists do not overlap.
+
+Train for 50 epochs, then evaluate the final checkpoint `last.pth` on the test
+set. The default workflow does not use test scores to select checkpoints or
+create a validation-selected `best.pth`. Start a new run when changing from a
+previous training/validation partition; those checkpoints belong to a different
+training protocol.
+
+`prepare_validation_split.py` is an optional utility and is not part of this
+2375-training/593-test workflow. Do not run it for the default protocol.
+This code update does not establish that the numerical results reported in
+the manuscript have been reproduced; performance must be measured by running
+the training and independent evaluation.
+
+To run the regression checks (including a small CPU training/evaluation test):
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 <details>
 <summary>Third-party licenses and attribution</summary>
@@ -76,3 +96,4 @@ SOFTWARE.
 These notices do not grant a blanket MIT license to the complete project.
 
 </details>
+
